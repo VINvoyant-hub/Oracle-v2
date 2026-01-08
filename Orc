@@ -1,0 +1,57 @@
+echo "# Oracle-v2" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/VINvoyant-hub/Oracle-v2.git
+git push -u origin main
+
+/
+  index.html
+  /assets
+    styles.css
+    app.js
+  /netlify
+    /functions
+      log-event.js
+      decode-vin.js
+      create-checkout.js
+      verify-checkout.js
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VINvoyant</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(to bottom, #111 0%, #333 100%);
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            text-align: center;
+        }
+        input[type="text"] {
+            padding: 10px;
+            margin-top: 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Let’s understand your vehicle.</h1>
+        <input type="text" placeholder="Enter your VIN" id="vin-input">
+    </div>
+</body>
+</html>
