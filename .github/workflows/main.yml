@@ -1,0 +1,11 @@
+/
+  index.html
+  /assets
+    styles.css
+    app.js
+  /netlify
+    /functions
+      log-event.js
+      decode-vin.js
+      create-checkout.js
+      verify-checkout.js on
