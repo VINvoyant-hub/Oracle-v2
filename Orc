@@ -1,24 +1,3 @@
-echo "# Oracle-v2" >> README.md
-git init
-git add README.md
-git commit -m "first commit"
-git branch -M main
-git remote add origin https://github.com/VINvoyant-hub/Oracle-v2.git
-git push -u origin main
-
-/
-  index.html
-  /assets
-    styles.css
-    app.js
-  /netlify
-    /functions
-      log-event.js
-      decode-vin.js
-      create-checkout.js
-      verify-checkout.js
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,5 +32,194 @@ git push -u origin main
         <h1>Let’s understand your vehicle.</h1>
         <input type="text" placeholder="Enter your VIN" id="vin-input">
     </div>
+</body>
+</html>
+
+
+/
+  index.html
+  /assets
+    styles.css
+    app.js
+  /netlify
+    /functions
+      log-event.js
+      decode-vin.js
+      create-checkout.js
+      verify-checkout.js
+
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>VINvoyant</title>
+  <link rel="stylesheet" href="/assets/styles.css" />
+</head>
+<body>
+  <div class="bg">
+    <div class="glow g1"></div>
+    <div class="glow g2"></div>
+    <div class="grain"></div>
+  </div>
+
+  <header class="topbar">
+    <div class="brand">VINvoyant</div>
+    <div class="status" id="statusPill" aria-live="polite">
+      <span class="dot"></span>
+      <span id="statusText">Quiet mode</span>
+    </div>
+  </header>
+
+  <main class="shell">
+    <!-- SECTION 1: ARRIVAL -->
+    <section class="panel hero" id="sectionArrival">
+      <h1 class="headline">Let’s understand your vehicle.</h1>
+      <p class="subhead">Paste your VIN. We’ll translate the machine into plain English.</p>
+
+      <div class="vinRow">
+        <input id="vinInput" class="vinInput" inputmode="latin" autocomplete="off"
+          maxlength="17" placeholder="Enter VIN (17 characters)" />
+        <button id="vinGo" class="btn primary">Continue</button>
+      </div>
+
+      <p class="hint">No noise. No pressure. Just clarity.</p>
+    </section>
+
+    <!-- SECTION 2: RECOGNITION -->
+    <section class="panel hidden" id="sectionRecognition">
+      <div class="rowBetween">
+        <div>
+          <h2 class="title">Vehicle identity</h2>
+          <p class="muted" id="vehicleLine">—</p>
+        </div>
+        <div class="mini">
+          <div class="badge" id="vinBadge">VIN: —</div>
+        </div>
+      </div>
+
+      <!-- Replace the “ugly silhouette” with a clean data-backed identity card -->
+      <div class="identityCard" id="identityCard">
+        <div class="identityLeft">
+          <div class="idKicker">Detected</div>
+          <div class="idName" id="idName">—</div>
+          <div class="idSpecs" id="idSpecs">—</div>
+          <div class="idMeta" id="idMeta">—</div>
+        </div>
+
+        <!-- Optional: If you later add a real image provider, we’ll place it here -->
+        <div class="identityRight">
+          <div class="imageFrame">
+            <div class="imagePlaceholder" id="vehicleImageSlot">
+              <div class="imageText">Real vehicle image loads here (optional)</div>
+              <div class="imageSub">We only show what we can justify with data.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: OVERVIEW -->
+    <section class="panel hidden" id="sectionOverview">
+      <h2 class="title">Quick overview</h2>
+
+      <div class="cards">
+        <article class="card">
+          <h3 class="cardTitle">Condition outlook</h3>
+          <p class="cardText" id="outlookText">—</p>
+          <button class="link" data-expand="outlook">Learn more</button>
+          <div class="expand hidden" id="expand_outlook"></div>
+        </article>
+
+        <article class="card">
+          <h3 class="cardTitle">Safety & recalls</h3>
+          <p class="cardText" id="recallText">—</p>
+          <button class="link" data-expand="recalls">View official details</button>
+          <div class="expand hidden" id="expand_recalls"></div>
+        </article>
+
+        <article class="card">
+          <h3 class="cardTitle">Market position</h3>
+          <p class="cardText" id="marketText">—</p>
+          <button class="link" data-expand="market">Learn more</button>
+          <div class="expand hidden" id="expand_market"></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- SECTION 4: INTENT -->
+    <section class="panel hidden" id="sectionIntent">
+      <h2 class="title">What are you here to do?</h2>
+      <p class="muted">Pick a path. We tailor the guidance to your situation.</p>
+
+      <div class="intentGrid">
+        <button class="intentBtn" data-intent="buy">I’m buying this car</button>
+        <button class="intentBtn" data-intent="own">I already own this car</button>
+        <button class="intentBtn" data-intent="repair">I’m repairing this car</button>
+        <button class="intentBtn" data-intent="sell">I’m selling this car</button>
+      </div>
+    </section>
+
+    <!-- SECTION 5: PAYMENT WINDOW + CHECKOUT -->
+    <section class="panel hidden" id="sectionPayment">
+      <div class="rowBetween">
+        <div>
+          <h2 class="title">Continue with a technician-backed report</h2>
+          <p class="muted">You’ll get a real response. No phone call required.</p>
+        </div>
+        <div class="timerPill" id="timerPill">
+          <span class="timerLabel">Hold:</span>
+          <span class="timerValue" id="timerValue">05:00</span>
+        </div>
+      </div>
+
+      <div class="payCard">
+        <div class="payLine"><span>Selected path</span><strong id="chosenIntent">—</strong></div>
+        <div class="payLine"><span>VIN</span><strong id="chosenVin">—</strong></div>
+
+        <div class="payActions">
+          <button class="btn primary" id="payNow">Pay & unlock scheduling</button>
+          <button class="btn ghost" id="resetFlow">Start over</button>
+        </div>
+
+        <p class="fine">
+          We reserve technician attention for a short window so you’re not waiting and I’m not guessing.
+          If the timer expires, you can restart any time.
+        </p>
+      </div>
+    </section>
+
+    <!-- SECTION 6: SCHEDULER (ONLY AFTER PAYMENT) -->
+    <section class="panel hidden" id="sectionScheduler">
+      <h2 class="title">Schedule (no phone call)</h2>
+      <p class="muted">Pick a time. You’ll get confirmation instantly.</p>
+
+      <!-- You can embed Cal.com, Calendly, etc. AFTER payment -->
+      <div class="schedulerFrame">
+        <!-- Replace src with your scheduling link -->
+        <iframe
+          id="schedulerEmbed"
+          title="Scheduling"
+          src="about:blank"
+          loading="lazy"
+        ></iframe>
+      </div>
+
+      <p class="fine">
+        If your package includes an in-person pre-purchase inspection, this is where it gets booked.
+        Otherwise, scheduling is for remote response windows.
+      </p>
+    </section>
+
+    <!-- FOOTER / CLOSURE -->
+    <section class="panel foot">
+      <p class="muted center">
+        Nothing here commits you to anything. VINvoyant is here to help you understand your vehicle and your options.
+      </p>
+    </section>
+  </main>
+
+  <script src="/assets/app.js"></script>
 </body>
 </html>
